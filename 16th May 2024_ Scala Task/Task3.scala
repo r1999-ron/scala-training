@@ -45,15 +45,21 @@ class OrganizationUnit(val name: String){
 class Employee(sno: Int, name: String, city: String) extends OrganizationUnit(s"(${sno}, ${name}, ${city})")
 
 class Department(name: String) extends OrganizationUnit(name){
-  var employees: List[Employee] = List()
-  var subDepartments: List[Department] = List()
+  var employees: Array[Employee] = Array()
+  var subDepartments: Array[Department] = Array()
 
   def addMember(employee: Employee): Unit = {
-    employees = employees :+ employee
+      val newEmployees = new Array[Employee](employees.length+1)
+      Array.copy(employees, 0, newEmployees, 0, employees.length)
+      newEmployees(employees.length)=employee
+      employees = newEmployees
   }
 
   def addSubMembers(subDept: Department): Unit = {
-    subDepartments = subDepartments :+ subDept
+      val newSubDepartments = new Array[Department](subDepartments.length+1)
+      Array.copy(subDepartments, 0, newSubDepartments,0, subDepartments.length)
+      newSubDepartments(subDepartments.length)=subDept
+      subDepartments = newSubDepartments
   }
 
   override def printOrganizationStructure(prefix: String = ""): Unit = {
@@ -63,7 +69,7 @@ class Department(name: String) extends OrganizationUnit(name){
   }
 }
 
-def findDepartment(dept: Department, path: List[String]): Option[Department] = {
+def findDepartment(dept: Department, path: Array[String]): Option[Department] = {
   if (path.isEmpty) Some(dept)
   else {
     dept.subDepartments.find(_.name == path.head) match {
@@ -97,8 +103,8 @@ object OrgApp extends App {
     Employee(sno, name, city)
   }
 
-  def getDepartmentDetails(): List[String] = {
-    readLine("Enter department path (separated by '/'): ").split("/").toList
+  def getDepartmentDetails(): Array[String] = {
+    readLine("Enter department path (separated by '/'): ").split("/")
   }
 
   var flag = true
