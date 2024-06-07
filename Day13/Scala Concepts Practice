@@ -1,0 +1,90 @@
+Scala Concept Note:
+
+
+Partially Applied Functions
+---------------------------
+ 
+Partially applied functions are the functions which are not applied on all arguments passed i.e. we can supply some arguments and left arguments are supplied when required.
+We use _ underscore as a placeholder for applying left argument
+
+
+object Applied
+{
+   def main(args : Array[String])
+   {
+      def Book(discount: Double, costprice: Double) : Double={
+         (1 - discount/100) * costprice
+}
+val discountedPrice = Book(25, _: Double)
+println(discountedPrice(400))
+}
+}
+
+Partial Functions
+-------------------
+Partial functions are those functions which are not defined for all possible input values. They are defined only for a subset of the input domain
+
+val divide: PartialFunction[Int, Int] = {
+  case x if x != 0 => 10 / x
+}
+
+println(divide(5)) // Output: 2
+println(divide(0)) // throws a MatchError
+
+In this example, the divide partial function is defined only for non-zero integers. If 0 is passed as input, it throws a MatchError.
+
+
+Implicit Conversion/Implicit Types
+----------------------------------
+
+Implicit conversions allow the compiler to automatically convert one type to another when necessary. This feature is particularly useful for improving code readability and reducing boilerplate.
+
+
+
+class Dollars(val amount: Int)
+
+implicit def dollarstoEuros(dollars: Dollars) : Int = (dollars.amount * 0.85).toInt
+
+def printEuros(amount: Int) : Unit={
+
+  println(s”Amount in Euros: $amount”)
+
+}
+
+val dollars = new Dollars(100)
+
+printEuros(dollars) // output = 85 
+
+In this example, the dollarsToEuros function is defined as an implicit conversion from Dollars to Int. When dollars is passed to printEuros, the implicit conversion is automatically invoked.
+
+
+
+Underscore Syntax in Collection Operations
+-------------------------------------------  
+
+In Scala, the underscore _ is a placeholder syntax commonly used in anonymous functions, particularly in collection operations like map, filter, reduce, etc. It represents each element of the collection in turn.
+
+
+
+val numbers = List(1, 2, 3, 4, 5)
+
+
+
+// Using map with underscore
+
+val doubled = numbers.map(_ * 2) // Output: List(2, 4, 6, 8, 10)
+
+
+
+// Using filter with underscore
+
+val evens = numbers.filter(_ % 2 == 0) // Output: List(2, 4)
+
+
+
+// Using reduce with underscore
+
+val sum = numbers.reduce(_ + _) // Output: 15
+
+
+In these examples, _ represents each element of the numbers list in turn. It's a concise way to define simple anonymous functions without explicitly naming the parameter.
