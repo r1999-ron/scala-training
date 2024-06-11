@@ -1,5 +1,6 @@
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
+import java.util.Properties
 
 object SparkTask15 {
   def main(args: Array[String]): Unit = {
@@ -20,6 +21,16 @@ object SparkTask15 {
     filteredDf.write
       .mode("overwrite")
       .json(outputPath)
+
+    val jdbcUrl = "jdbc:mysql://34.94.143.214:3306/company"
+    val connectionProperties = new Properties()
+    connectionProperties.put("user", "admin")
+    connectionProperties.put("password", "Ron@1999")
+    connectionProperties.put("driver", "com.mysql.cj.jdbc.Driver")
+
+    filteredDf.write
+      .mode("overwrite")
+      .jdbc(jdbcUrl, "department_salaries", connectionProperties)
 
     spark.stop()
   }
