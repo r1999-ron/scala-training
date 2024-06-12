@@ -6,7 +6,6 @@ object SparkTask16 {
   def main(args: Array[String]): Unit = {
     val spark = SparkSession.builder()
       .appName("EmployeeDepartmentJoin")
-      .master("local[*]")
       .getOrCreate()
 
     val jdbcHostname = "34.94.143.214"
@@ -44,9 +43,12 @@ object SparkTask16 {
       col("Employee")
     )
 
-    val resultJson = resultDF.toJSON.collect()
+   // val resultJson = resultDF.toJSON.collect()
 
-    println("[" + resultJson.mkString(",\n") + "]")
+    //println("[" + resultJson.mkString(",\n") + "]")
+
+    val outputPath = "hdfs:///output-type.json"
+    resultDF.write.mode("overwrite").json(outputPath)
 
     spark.stop()
   }
