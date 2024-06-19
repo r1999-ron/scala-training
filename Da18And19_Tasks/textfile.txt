@@ -1,0 +1,6 @@
+Hello world
+This is a test file
+Hello Spark
+This file is used for word count
+Spark is powerful
+Word count is a common example
